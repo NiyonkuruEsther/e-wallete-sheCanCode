@@ -1,14 +1,44 @@
+import React from "react";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { GradientHeader } from "../typography";
 
-
-import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
-
-const Button = ({ onPress, title, style }) => {
+const Button = ({ onPress, title, backgroundStyle }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[{ padding: 10, borderRadius: 5,margin: 5, paddingVertical: 6, borderRadius: 6, alignSelf: "center",borderWidth:1,borderRightColor:'white',borderBottomColor:'white',borderLeftColor:'white',borderTopColor:'white'}, style]}>
-      <Text style={{  fontWeight: "500", padding: 10, alignSelf: "center" ,color:'white'}}>{title}</Text>
-    </TouchableOpacity>
+    <LinearGradient
+      start={{ x: 0, y: 0 }}
+      colors={
+        (backgroundStyle === "gradient" && ["#7DDF9D", "#17B7BD"]) ||
+        (backgroundStyle === "white" && ["#ffffff", "#ffffff"]) ||
+        []
+      }
+      style={styles.buttonGradient}
+      className={`${
+        backgroundStyle === undefined ? "border border-white py-5" : "py-4"
+      } rounded-xl px-6 items-center w-auto`}
+    >
+      {backgroundStyle === "white" ? (
+        <GradientHeader text={title} />
+      ) : (
+        <TouchableOpacity onPress={onPress} style={{ width: "auto" }}>
+          <Text style={styles.buttonText}>{title}</Text>
+        </TouchableOpacity>
+      )}
+    </LinearGradient>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: "auto"
+  },
+
+  buttonText: {
+    fontWeight: "500",
+    fontSize: 16,
+    alignSelf: "center",
+    color: "white"
+  }
+});
 
 export default Button;

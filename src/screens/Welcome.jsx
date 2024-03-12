@@ -1,35 +1,43 @@
-import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
-import Button from '../components/UI/Button';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { View, Text, Dimensions } from "react-native";
+import Button from "../components/UI/Button";
+import { LinearGradient } from "expo-linear-gradient";
 
 const WelcomePage = () => {
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
 
   return (
-    <LinearGradient colors={["#7DDF9D", "#17B7BD"]} style={{ flex: 1 }}>
-      <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: windowWidth * 0.05 }}>
-        <Button title="D" style={{ marginRight: 258, fontWeight: 'bold',backgroundColor:'rgb(244,245,246)' ,color:'rgb(45,191,182)'}} />
-        <Text style={{ fontSize: windowWidth * 0.08, color: 'white' }}>Welcome </Text>
-        <Text style={{ fontSize: windowWidth * 0.035, color: 'white', marginTop: windowHeight * 0.02 }}>Easiest way</Text>
-        <Text style={{ fontSize: windowWidth * 0.035, color: 'white' }}>Manage Your Money</Text>
-        <Button
-  title="Login"
-  style={{ 
-    marginTop: windowHeight * 0.05, 
-    backgroundColor: 'rgb(244,245,246)' ,
-    width: windowWidth * 0.9,
-    color:'rgb(45,191,182)' 
-  }}
-/>
+    <LinearGradient
+      colors={["#7DDF9D", "#17B7BD"]}
+      style={{ flex: 1 }}
+      className="px-5"
+    >
+      <View className="gap-y-5  flex-1 justify-end pb-[10vh]">
+        <View className="self-start">
+          <Button title="D" backgroundStyle={"white"} />
+        </View>
 
-        <Button
-          title="Register"
-          style={{ marginTop: windowHeight * 0.02, width: windowWidth * 0.9, color: 'white' }}
-        />
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: 'white', marginTop: windowHeight * 0.01 }}>Terms Or Services</Text>
+        <View className="gap-y-1">
+          <Text
+            style={{ fontSize: 24, fontWeight: "bold" }}
+            className="text-white pb-3"
+          >
+            Welcome
+          </Text>
+          <Text className=" text-[19px] text-white">Easiest way</Text>
+          <Text className=" text-[19px] text-white">Manage Your Money</Text>
+        </View>
+        <View className="pb-5 ">
+          <Button title="Login" backgroundStyle={"white"} />
+        </View>
+
+        <Button title="Register" />
+
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text style={{ color: "white", marginTop: windowHeight * 0.01 }}>
+            Terms Or Services
+          </Text>
         </View>
       </View>
     </LinearGradient>

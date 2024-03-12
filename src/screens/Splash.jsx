@@ -5,18 +5,19 @@ import {
   Dimensions,
   SafeAreaView,
   StyleSheet,
-  Image
+  Image,
+  Pressable
 } from "react-native";
 import React, { useRef, useState } from "react";
 import Carousel from "react-native-snap-carousel";
 import { SPLASH } from "../../data/splash";
 import { LinearGradient } from "expo-linear-gradient";
-import Typography from "../components/typography";
+import { GradientHeader } from "../components/typography";
 
 export const heightFull = Dimensions.get("window").height;
 export const widthFull = Dimensions.get("window").width;
 
-const Splash = () => {
+const Splash = ({ navigation }) => {
   const carouselRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -38,19 +39,22 @@ const Splash = () => {
     const imageSource = getImageSource(item.imgName);
 
     return (
-      <TouchableOpacity className="px-5 gap-y-5">
+      <Pressable className="px-5 gap-y-5">
         {imageSource && <Image source={imageSource} className="h-max mb-5" />}
-        <Typography text={item.heading} />
         <Text className=" text-[19px] text-gray-400 dark:text-white ">
           {item.paragraph}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
   return (
-    <SafeAreaView className="flex-1 justify-center ">
-      <View className="gap-y-5">
+    <SafeAreaView className="flex-1 items-center">
+      <Text className="self-end px-5 font-semibold">Skip</Text>
+      <Pressable
+        // onLongPress={navigation.navigate("Welcome")}
+        className="gap-y-5  h-fit"
+      >
         <Carousel
           ref={carouselRef}
           layout={"default"}
@@ -78,7 +82,7 @@ const Splash = () => {
             ></TouchableOpacity>
           ))}
         </TouchableOpacity>
-      </View>
+      </Pressable>
     </SafeAreaView>
   );
 };

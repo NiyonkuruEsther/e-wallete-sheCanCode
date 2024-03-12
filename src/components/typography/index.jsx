@@ -17,12 +17,10 @@ const GradientText = ({ ...rest }) => {
   );
 };
 
-const Typography = ({ text, colors }) => {
+export const GradientHeader = ({ text, colors }) => {
   return (
     <GradientText colors={colors}>
       <Text style={{ fontSize: 24, fontWeight: "bold" }}>{text}</Text>
     </GradientText>
   );
 };
-
-export default Typography;
