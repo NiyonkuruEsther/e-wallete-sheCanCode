@@ -57,7 +57,7 @@ const Splash = ({ navigation }) => {
       >
         <Text
           className=" font-semibold text-gray-500 "
-          style={{ marginTop: Platform === "android" && 30 }}
+          style={{ paddingTop: Platform.OS === "android" && 50 }}
         >
           Skip
         </Text>
