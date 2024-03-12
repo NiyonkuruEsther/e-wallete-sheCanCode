@@ -20,6 +20,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { LoginSchema, SignUpSchema } from "../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 
 function Forget({ navigation }) {
@@ -33,10 +34,13 @@ function Forget({ navigation }) {
     reset,
     clearErrors
   } = useForm({
-    resolver: yupResolver(LoginSchema),
+    resolver: yupResolver(
+      yup.object().shape({
+        email: yup.string().required("Email is required").email("Invalid email")
+      })
+    ),
     defaultValues: {
-      email: "",
-      password: ""
+      email: ""
     }
   });
 
@@ -45,17 +49,18 @@ function Forget({ navigation }) {
   const onSubmit = async (data) => {
     try {
       await sendPasswordResetEmail(auth, data.email);
+      console.log("Reset link sent");
+
       showMessage({
         message: "Reset link sent",
         type: "success"
       });
-      reset({
-        email: "",
-        password: "",
-        confirm_password: ""
-      });
+      // reset({
+      //   email: ""
+      // });
     } catch (error) {
       setIsLoggedIn(false);
+      console.log(error);
       if (error.code === "auth/too-many-requests") {
         setLoginError(
           "Too many request, Please reset Password or Try again later"
@@ -76,12 +81,6 @@ function Forget({ navigation }) {
           message: "Network failed",
           type: "danger"
         });
-      } else {
-        showMessage({
-          message: error.code,
-          type: "danger"
-        });
-        console.log(isLoggedIn !== null || loginError);
       }
     }
   };

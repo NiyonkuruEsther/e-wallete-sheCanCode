@@ -12,7 +12,6 @@ const InputLabel = ({
   error
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  console.log(error, isValid);
   return (
     <View style={{ width: widthFull - 40 }}>
       <TextInput
