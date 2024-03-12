@@ -1,4 +1,10 @@
-import { View, Text, SafeAreaView, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 import React, { useState } from "react";
 import InputLabel from "../../components/UI/InputLabel";
 import { GradientHeader } from "../../components/typography";
@@ -71,7 +77,10 @@ const Register = ({ navigation }) => {
     }
   };
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView
+      className="flex-1"
+      style={{ paddingTop: Platform.OS === "android" && 50 }}
+    >
       <FlashMessage
         duration={3000}
         position={"top"}
