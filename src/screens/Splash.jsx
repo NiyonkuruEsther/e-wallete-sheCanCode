@@ -6,7 +6,8 @@ import {
   SafeAreaView,
   StyleSheet,
   Image,
-  Pressable
+  Pressable,
+  Platform
 } from "react-native";
 import React, { useRef, useState } from "react";
 import Carousel from "react-native-snap-carousel";
@@ -54,7 +55,12 @@ const Splash = ({ navigation }) => {
         onPress={() => navigation.navigate("Welcome")}
         className="self-end px-5"
       >
-        <Text className=" font-semibold text-gray-500 ">Skip</Text>
+        <Text
+          className=" font-semibold text-gray-500 "
+          style={{ marginTop: Platform === "android" && 30 }}
+        >
+          Skip
+        </Text>
       </Pressable>
       <Pressable className=" flex-1 justify-center">
         <View className="gap-y-5">
