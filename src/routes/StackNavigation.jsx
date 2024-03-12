@@ -5,6 +5,7 @@ import Login from "../screens/auth/Login";
 import Forget from "../screens/auth/Forget";
 
 import { NavigationContainer } from "@react-navigation/native";
+import Register from "../screens/auth/Register";
 
 const Stack = createStackNavigator();
 
@@ -15,10 +16,11 @@ function StackNavigation() {
         // initialRouteName="Splash"
         screenOptions={{ headerShown: false }}
       >
-        {/* <Stack.Screen name="Splash" component={Splash} />
-        <Stack.Screen name="Welcome" component={WelcomePage} /> */}
-        {/* <Stack.Screen name="Login" component={Login} /> */}
+        {/* <Stack.Screen name="Splash" component={Splash} /> */}
+        <Stack.Screen name="Welcome" component={WelcomePage} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Forget" component={Forget} />
+        <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>
   );

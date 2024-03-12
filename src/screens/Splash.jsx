@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
-  StyleSheet,
   Image,
   Pressable,
   Platform

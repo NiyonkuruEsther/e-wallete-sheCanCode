@@ -35,9 +35,7 @@ const InputLabel = ({
                 : ""
             }
             size={25}
-            color={
-              error === false ? "#7DDF9D" : error === true ? "#8B0000" : "gray"
-            }
+            color={error === "" ? "#17B7BD" : error ? "#8B0000" : "gray"}
             style={{ paddingHorizontal: 0 }}
             onPress={() => setShowPassword(!showPassword)}
           />
@@ -49,7 +47,7 @@ const InputLabel = ({
         }}
         theme={{
           colors: {
-            primary: error === false ? "#7DDF9D" : "gray",
+            primary: error === false ? "#17B7BD" : "gray",
             text: "black",
             underlineColor: "transparent"
           }

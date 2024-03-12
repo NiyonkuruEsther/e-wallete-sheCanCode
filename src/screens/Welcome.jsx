@@ -1,18 +1,12 @@
 import React from "react";
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import Button from "../components/UI/Button";
 import { LinearGradient } from "expo-linear-gradient";
 
-const WelcomePage = () => {
+const WelcomePage = ({ navigation }) => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
-  const navigation = useNavigation();
-
-  const handleLoginPress = () => {
-    navigation.navigate("Login"); 
-  };
-  
 
   return (
     <LinearGradient
@@ -36,12 +30,17 @@ const WelcomePage = () => {
           <Text className=" text-[19px] text-white">Manage Your Money</Text>
         </View>
         <View className="pb-5 ">
-          <TouchableOpacity onPress={handleLoginPress}> 
-            <Button title="Login" backgroundStyle={"white"} />
-          </TouchableOpacity>
+          <Button
+            title="Login"
+            backgroundStyle={"white"}
+            onPress={() => navigation.navigate("Login")}
+          />
         </View>
 
-        <Button title="Register" />
+        <Button
+          title="Register"
+          onPress={() => navigation.navigate("Register")}
+        />
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Text style={{ color: "white", marginTop: windowHeight * 0.01 }}>
@@ -54,5 +53,3 @@ const WelcomePage = () => {
 };
 
 export default WelcomePage;
-
-
