@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { widthFull } from "../../screens/Splash";
 
 const InputLabel = ({
-  iconName,
+  isValid,
   label,
   secureTextEntry,
   onChange,
@@ -12,7 +12,7 @@ const InputLabel = ({
   error
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  console.log(error);
+  console.log(error, isValid);
   return (
     <View style={{ width: widthFull - 40 }}>
       <TextInput
@@ -26,7 +26,7 @@ const InputLabel = ({
         right={
           <TextInput.Icon
             icon={
-              !secureTextEntry && error === undefined
+              !secureTextEntry && isValid
                 ? "check-circle"
                 : secureTextEntry
                 ? showPassword
@@ -37,13 +37,7 @@ const InputLabel = ({
                 : ""
             }
             size={25}
-            color={
-              error === undefined
-                ? "#17B7BD"
-                : error?.message
-                ? "#8B0000"
-                : "gray"
-            }
+            color={isValid ? "#17B7BD" : error?.message ? "#8B0000" : "gray"}
             style={{ paddingHorizontal: 0 }}
             onPress={() => setShowPassword(!showPassword)}
           />
@@ -55,7 +49,7 @@ const InputLabel = ({
         }}
         theme={{
           colors: {
-            primary: error === undefined ? "#17B7BD" : "gray",
+            primary: isValid ? "#17B7BD" : "gray",
             text: "black",
             underlineColor: "transparent"
           }

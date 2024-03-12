@@ -17,7 +17,7 @@ const Register = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, isSubmitted },
     watch,
     reset,
     clearErrors
@@ -67,12 +67,6 @@ const Register = ({ navigation }) => {
           message: loginError,
           type: "danger"
         });
-      } else {
-        showMessage({
-          message: error.code,
-          type: "danger"
-        });
-        console.log(isLoggedIn !== null || loginError);
       }
     }
   };
@@ -108,6 +102,7 @@ const Register = ({ navigation }) => {
                     onChange={onChange}
                     value={value}
                     error={errors.name}
+                    isValid={isDirty && !errors.name && isSubmitted}
                   />
                 )}
                 name="name"
@@ -128,6 +123,7 @@ const Register = ({ navigation }) => {
                     onChange={onChange}
                     value={value}
                     error={errors.email}
+                    isValid={isDirty && !errors.email && isSubmitted}
                   />
                 )}
                 name="email"
@@ -151,6 +147,7 @@ const Register = ({ navigation }) => {
                     onChange={onChange}
                     value={value}
                     error={errors.password}
+                    isValid={isDirty && !errors.password && isSubmitted}
                   />
                 )}
                 name="password"
@@ -174,6 +171,7 @@ const Register = ({ navigation }) => {
                     onChange={onChange}
                     value={value}
                     error={errors.confirm_password}
+                    isValid={isDirty && !errors.confirm_password && isSubmitted}
                   />
                 )}
                 name="confirm_password"

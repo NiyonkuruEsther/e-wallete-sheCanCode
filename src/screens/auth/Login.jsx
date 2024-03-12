@@ -26,7 +26,7 @@ function Login({ navigation }) {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, isSubmitted },
     watch,
     reset,
     clearErrors
@@ -47,11 +47,11 @@ function Login({ navigation }) {
         message: "User successfully logged in",
         type: "success"
       });
-      // reset({
-      //   email: "",
-      //   password: "",
-      //   confirm_password: ""
-      // });
+      reset({
+        email: "",
+        password: "",
+        confirm_password: ""
+      });
     } catch (error) {
       setIsLoggedIn(false);
       if (error.code === "auth/too-many-requests") {
@@ -124,6 +124,7 @@ function Login({ navigation }) {
                     onChange={onChange}
                     value={value}
                     error={errors.email}
+                    isValid={isDirty && !errors.email && isSubmitted}
                   />
                 )}
                 name="email"
@@ -148,6 +149,7 @@ function Login({ navigation }) {
                       onChange={onChange}
                       value={value}
                       error={errors.password}
+                      isValid={isDirty && !errors.password && isSubmitted}
                     />
                   )}
                   name="password"
