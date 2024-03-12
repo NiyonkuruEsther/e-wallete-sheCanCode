@@ -3,7 +3,7 @@ import { View, Text, Dimensions } from "react-native";
 import Button from "../components/UI/Button";
 import { LinearGradient } from "expo-linear-gradient";
 
-const WelcomePage = () => {
+const WelcomePage = ({ navigation }) => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
@@ -32,7 +32,10 @@ const WelcomePage = () => {
           <Button title="Login" backgroundStyle={"white"} />
         </View>
 
-        <Button title="Register" />
+        <Button
+          title="Register"
+          onPress={() => navigation.navigate("Register")}
+        />
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Text style={{ color: "white", marginTop: windowHeight * 0.01 }}>

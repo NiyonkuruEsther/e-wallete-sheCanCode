@@ -1,30 +1,34 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { GradientHeader } from "../typography";
 
 const Button = ({ onPress, title, backgroundStyle }) => {
   return (
-    <LinearGradient
-      start={{ x: 0, y: 0 }}
-      colors={
-        (backgroundStyle === "gradient" && ["#7DDF9D", "#17B7BD"]) ||
-        (backgroundStyle === "white" && ["#ffffff", "#ffffff"]) ||
-        []
-      }
-      style={styles.buttonGradient}
-      className={`${
-        backgroundStyle === undefined ? "border border-white py-5" : "py-4"
-      } rounded-xl px-6 items-center w-auto`}
-    >
-      {backgroundStyle === "white" ? (
-        <GradientHeader text={title} />
-      ) : (
-        <TouchableOpacity onPress={onPress} style={{ width: "auto" }}>
-          <Text style={styles.buttonText}>{title}</Text>
-        </TouchableOpacity>
-      )}
-    </LinearGradient>
+    <Pressable onPress={onPress}>
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        colors={
+          (backgroundStyle === "gradient" && ["#7DDF9D", "#17B7BD"]) ||
+          (backgroundStyle === "white" && ["#ffffff", "#ffffff"]) || [
+            "transparent",
+            "transparent"
+          ]
+        }
+        style={styles.buttonGradient}
+        className={`${
+          backgroundStyle === undefined ? "border border-white py-5" : "py-4"
+        } rounded-xl px-6 items-center w-auto`}
+      >
+        {backgroundStyle === "white" ? (
+          <GradientHeader text={title} />
+        ) : (
+          <TouchableOpacity style={{ width: "auto" }}>
+            <Text style={styles.buttonText}>{title}</Text>
+          </TouchableOpacity>
+        )}
+      </LinearGradient>
+    </Pressable>
   );
 };
 
