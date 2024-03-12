@@ -46,11 +46,11 @@ const Register = ({ navigation }) => {
         message: "User successfully registered",
         type: "success"
       });
-      // reset({
-      //   email: "",
-      //   password: "",
-      //   confirm_password: ""
-      // });
+      reset({
+        email: "",
+        password: "",
+        confirm_password: ""
+      });
     } catch (error) {
       setIsLoggedIn(false);
       if (error.code === "auth/too-many-requests") {
@@ -75,14 +75,6 @@ const Register = ({ navigation }) => {
         console.log(isLoggedIn !== null || loginError);
       }
     }
-    // finally {
-    //   (isLoggedIn !== null || loginError) &&
-    //     showMessage({
-    //       message:
-    //         loginError.length > 0 ? loginError : "User successfully registered",
-    //       type: loginError !== "" ? "danger" : "success"
-    //     });
-    // }
   };
   return (
     <SafeAreaView className="flex-1">

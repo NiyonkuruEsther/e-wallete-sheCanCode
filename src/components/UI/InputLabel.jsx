@@ -12,7 +12,7 @@ const InputLabel = ({
   error
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-
+  console.log(error);
   return (
     <View style={{ width: widthFull - 40 }}>
       <TextInput
@@ -26,16 +26,24 @@ const InputLabel = ({
         right={
           <TextInput.Icon
             icon={
-              !secureTextEntry && error === "false"
+              !secureTextEntry && error === undefined
                 ? "check-circle"
                 : secureTextEntry
                 ? showPassword
                   ? "eye"
                   : "eye-off"
+                : error?.message
+                ? "close-circle"
                 : ""
             }
             size={25}
-            color={error === "" ? "#17B7BD" : error ? "#8B0000" : "gray"}
+            color={
+              error === undefined
+                ? "#17B7BD"
+                : error?.message
+                ? "#8B0000"
+                : "gray"
+            }
             style={{ paddingHorizontal: 0 }}
             onPress={() => setShowPassword(!showPassword)}
           />
@@ -47,7 +55,7 @@ const InputLabel = ({
         }}
         theme={{
           colors: {
-            primary: error === false ? "#17B7BD" : "gray",
+            primary: error === undefined ? "#17B7BD" : "gray",
             text: "black",
             underlineColor: "transparent"
           }
