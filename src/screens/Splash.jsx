@@ -39,9 +39,9 @@ const Splash = ({ navigation }) => {
     const imageSource = getImageSource(item.imgName);
 
     return (
-      <Pressable className="px-5 gap-y-5">
-        {imageSource && <Image source={imageSource} className="h-max mb-5" />}
-        <Text className=" text-[19px] text-gray-400 dark:text-white ">
+      <Pressable className="gap-y-5">
+        {imageSource && <Image source={imageSource} className="h-max ml-2" />}
+        <Text className=" text-[19px] text-gray-400 dark:text-white px-4">
           {item.paragraph}
         </Text>
       </Pressable>
@@ -49,39 +49,43 @@ const Splash = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center">
-      <Text className="self-end px-5 font-semibold">Skip</Text>
+    <SafeAreaView className="flex-1">
       <Pressable
-        // onLongPress={navigation.navigate("Welcome")}
-        className="gap-y-5  h-fit"
+        onPress={() => navigation.navigate("Welcome")}
+        className="self-end px-5"
       >
-        <Carousel
-          ref={carouselRef}
-          layout={"default"}
-          renderItem={renderItem}
-          sliderWidth={widthFull}
-          itemWidth={itemWidth}
-          data={SPLASH}
-          onSnapToItem={(index) => {
-            if (index >= 0 && index <= 4) {
-              setActiveIndex(index);
-            }
-          }}
-        />
+        <Text className=" font-semibold text-gray-500 ">Skip</Text>
+      </Pressable>
+      <Pressable className=" flex-1 justify-center">
+        <View className="gap-y-5">
+          <Carousel
+            ref={carouselRef}
+            layout={"default"}
+            renderItem={renderItem}
+            sliderWidth={widthFull}
+            itemWidth={itemWidth}
+            data={SPLASH}
+            onSnapToItem={(index) => {
+              if (index >= 0 && index <= 4) {
+                setActiveIndex(index);
+              }
+            }}
+          />
 
-        <TouchableOpacity className="flex-row gap-x-2 pt-2 pl-7">
-          {[1, 2, 3].map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={{
-                backgroundColor: index === activeIndex ? "#17B7BD" : "gray",
-                width: index === activeIndex ? 50 : 20,
-                height: 6
-              }}
-              className={`rounded-full`}
-            ></TouchableOpacity>
-          ))}
-        </TouchableOpacity>
+          <TouchableOpacity className="flex-row gap-x-2 pt-2 ml-5">
+            {[1, 2, 3].map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={{
+                  backgroundColor: index === activeIndex ? "#17B7BD" : "gray",
+                  width: index === activeIndex ? 50 : 20,
+                  height: 6
+                }}
+                className={`rounded-full`}
+              ></TouchableOpacity>
+            ))}
+          </TouchableOpacity>
+        </View>
       </Pressable>
     </SafeAreaView>
   );
