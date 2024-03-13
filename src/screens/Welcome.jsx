@@ -1,11 +1,18 @@
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import Button from "../components/UI/Button";
 import { LinearGradient } from "expo-linear-gradient";
 
 const WelcomePage = () => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
+  const navigation = useNavigation();
+
+  const handleLoginPress = () => {
+    navigation.navigate("Login"); 
+  };
+  
 
   return (
     <LinearGradient
@@ -29,7 +36,9 @@ const WelcomePage = () => {
           <Text className=" text-[19px] text-white">Manage Your Money</Text>
         </View>
         <View className="pb-5 ">
-          <Button title="Login" backgroundStyle={"white"} />
+          <TouchableOpacity onPress={handleLoginPress}> 
+            <Button title="Login" backgroundStyle={"white"} />
+          </TouchableOpacity>
         </View>
 
         <Button title="Register" />
@@ -45,3 +54,5 @@ const WelcomePage = () => {
 };
 
 export default WelcomePage;
+
+

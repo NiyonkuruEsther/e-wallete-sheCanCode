@@ -10,7 +10,7 @@ const Button = ({ onPress, title, backgroundStyle }) => {
       colors={
         (backgroundStyle === "gradient" && ["#7DDF9D", "#17B7BD"]) ||
         (backgroundStyle === "white" && ["#ffffff", "#ffffff"]) ||
-        []
+        ["transparent", "transparent"]
       }
       style={styles.buttonGradient}
       className={`${
