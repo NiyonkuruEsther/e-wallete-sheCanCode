@@ -1,4 +1,4 @@
-import { View, Text, Keyboard } from "react-native";
+c
 import { TextInput } from "react-native-paper";
 import React, { useState } from "react";
 import { widthFull } from "../../screens/Splash";
