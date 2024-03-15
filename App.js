@@ -4,9 +4,10 @@ import { LogBox, StyleSheet, Text, View } from "react-native";
 import Splash from "./src/screens/Splash";
 import { useState, useEffect } from "react";
 import StackNavigation from "./src/routes/StackNavigation";
+import AddExpenses from "./src/screens/expenses/AddExpenses";
 
 LogBox.ignoreAllLogs();
 
 export default function App() {
-  return <StackNavigation />;
+  return <AddExpenses />;
 }
