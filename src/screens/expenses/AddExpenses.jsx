@@ -1,104 +1,169 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+  Keyboard,
+  Pressable
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { Picker } from '@react-native-picker/picker'; 
+import { Picker } from "@react-native-picker/picker";
 import { heightFull, widthFull } from "../Splash";
+import { Dropdown } from "react-native-element-dropdown";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { writeDataToFirestore, writeTransactions } from "../../fetch";
 
 const AddExpenses = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  
-  const [selectedValue, setSelectedValue] = useState("food");
-  const [selectedDate, setSelectedDate] = useState('');
 
-  const countries = ["Egypt", "Canada", "Australia", "Ireland"];
+  const [selectedValue, setSelectedValue] = useState("food");
+  const [data, setData] = useState({
+    name: "Fanta",
+    category: "Food",
+    amount: 600,
+    date: new Date()
+  });
+
+  const optionData = [
+    { label: "Item 1", value: "1" },
+    { label: "Item 2", value: "2" },
+    { label: "Item 3", value: "3" },
+    { label: "Item 4", value: "4" },
+    { label: "Item 5", value: "5" },
+    { label: "Item 6", value: "6" },
+    { label: "Item 7", value: "7" },
+    { label: "Item 8", value: "8" }
+  ];
+
+  const renderItem = (item) => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.textItem}>{item.label}</Text>
+        {item.value === value && (
+          <AntDesign
+            style={styles.icon}
+            color="black"
+            name="Safety"
+            size={20}
+          />
+        )}
+      </View>
+    );
+  };
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
 
   return (
-    <View className="flex-1 relative">
+    <Pressable className="flex-1 relative" onPress={dismissKeyboard}>
       <LinearGradient
         colors={["#7DDF9D", "#17B7BD"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.oval}
-      >
-         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' ,paddingTop:70}}>
-          <TouchableOpacity>
-            <AntDesign name='caretleft' style={{ color: 'white', fontSize: 20 }} />
-          </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 20 }}>Expenses</Text>
-          <TouchableOpacity>
-            <AntDesign name='dotchart' style={{ color: 'white', fontSize: 20 }} />
-          </TouchableOpacity>
+      ></LinearGradient>
+      <View className="absolute flex-row bg-red- top-[8vh] w-full items-center justify-between px-5">
+        <TouchableOpacity>
+          <AntDesign
+            name="arrowleft"
+            style={{ color: "white", fontSize: 20 }}
+          />
+        </TouchableOpacity>
+        <Text
+          style={{
+            color: "white",
+            fontSize: 20
+          }}
+        >
+          Expenses
+        </Text>
+      </View>
+      <View className="absolute rounded-[20px] bg-white h-[50vh] top-[27vh] w-[88vw] right-[6vw] px-5 justify-around shadow-lg">
+        <View className="gap-y-3">
+          <Text>CATEGORY</Text>
+          <Dropdown
+            style={styles.dropdown}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={optionData}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Select item"
+            searchPlaceholder="Search..."
+            value={value}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
+            renderLeftIcon={() => (
+              <AntDesign
+                style={styles.icon}
+                color="black"
+                name="Safety"
+                size={20}
+              />
+            )}
+            renderItem={renderItem}
+          />
         </View>
-      </LinearGradient>
-
-      <View className="absolute rounded-[20px] bg-white h-[55vh] top-[27vh] w-[80vw] right-[10vw] px-5 gap-y-5" style={{ ...Platform.select({
-    ios: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-    },
-    android: {
-      elevation: 5,
-    },
-  }),justifyContent:'center'}}>
-        <View >
-          <Text >CATEGORY</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={selectedValue}
-              style={{ height:29, width: '100%', marginBottom: 10, padding: 5 }}
-              onValueChange={(itemValue) => setSelectedValue(itemValue)}
-              mode="dropdown"
-            >
-              <Picker.Item label="Food" value="food" />
-              <Picker.Item label="Transport" value="transport" />
-              <Picker.Item label="School Expenses" value="school-expenses" />
-            </Picker>
-          </View>
-        </View>
-        <View>
+        <View className="gap-y-3">
           <Text>AMOUNT</Text>
-          <View className="group flex-row justify-between border border-lighGray rounded-xl h-[5vh] items-center px-3 focus:border-bluePrimary focus:border-2 ">
+          <View className="group flex-row justify-between border border-lighGray rounded-lg h-[5vh] items-center px-3 focus:border-bluePrimary focus:border-2 ">
             <TextInput
               placeholder="Enter amount"
               style=""
               className="h-full flex-1"
+              keyboardType="numeric"
             />
             <Text className="">Clear</Text>
           </View>
         </View>
-
-        <View>
-          <Text>Date</Text>
+        <View className="gap-y-3">
+          <View className=" flex-row justify-between items-center">
+            <Text>DATE</Text>
+          </View>
           <TouchableOpacity
             onPress={() => setOpen(true)}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: 20,
-              padding: 10,
-              borderWidth: 1,
-            }}
+            className=" flex-row justify-end border border-lighGray rounded-lg "
           >
-            <AntDesign name="calendar" size={20} color="#000" style={{ marginRight: 10 }} />
-            <Text>{selectedDate}</Text>
+            <RNDateTimePicker
+              mode="date"
+              accentColor="#17B7BD"
+              minimumDate={new Date()}
+              themeVariant=""
+              value={new Date()}
+              display="compact"
+              style={{
+                height: (heightFull * 4.5) / 100
+              }}
+            />
           </TouchableOpacity>
+        </View>
 
-   <Text>Invoices</Text>
-  <TouchableOpacity
-    style={{ backgroundColor: '#fff', padding: 10, alignItems: 'center', borderRadius: 5, padding: 10, borderWidth: 1 }}
-    onPress={() => alert('Add Invoice')}
-  >
-    <Text style={{ color: '#000' }}> <AntDesign name="plus" size={22} color="#000" style={{backgroundColor:'lightblue' }} />  Add Invoice</Text>
-  </TouchableOpacity>
+        <View className="gap-y-3">
+          <Text>Invoices</Text>
+          <TouchableOpacity
+            onPress={() => writeTransactions("expenses", data, userId)}
+            className="flex-row justify-center items-center py-2 border border-lighGray rounded-lg"
+          >
+            <View className="bg-gray-600  px-2 py-1 rounded-full mr-3">
+              <Text className=" text-white">+</Text>
+            </View>
 
+            <Text style={{ color: "#000" }}>Add Invoice</Text>
+          </TouchableOpacity>
         </View>
       </View>
-
-    </View>
+    </Pressable>
   );
 };
 
@@ -110,11 +175,41 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 500,
     transform: [{ scaleX: 1.7 }]
   },
-  pickerContainer:{
-    borderWidth: 1,
-    borderRadius: 5,
-    overflow: 'hidden',
+  dropdown: {
+    // height: heightFull * 0.02,
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+    backgroundColor: "white",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2
   },
+  icon: {
+    marginRight: 5
+  },
+  item: {
+    padding: 17,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  textItem: {
+    flex: 1
+  },
+
+  iconStyle: {
+    width: 20,
+    height: 20
+  },
+  inputSearchStyle: {
+    height: 40
+  }
 });
 
 export default AddExpenses;

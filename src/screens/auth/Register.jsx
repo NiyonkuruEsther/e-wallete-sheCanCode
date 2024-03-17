@@ -16,6 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { SignUpSchema } from "../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import { writeDataToFirestore } from "../../fetch";
 
 const Register = ({ navigation }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -48,6 +49,10 @@ const Register = ({ navigation }) => {
     );
     try {
       await createUserWithEmailAndPassword(auth, data.email, data.password);
+      await writeDataToFirestore("users", {
+        name: data.name,
+        email: data.email
+      });
       showMessage({
         message: "User successfully registered",
         type: "success"
@@ -76,6 +81,7 @@ const Register = ({ navigation }) => {
       }
     }
   };
+
   return (
     <SafeAreaView
       className="flex-1"
