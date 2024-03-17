@@ -1,128 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { useEffect, useRef } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  useColorScheme
-} from "react-native";
-import * as Animatable from "react-native-animatable";
-import { useTheme } from "@react-navigation/native";
-import AddExpenses from "../screens/expenses/AddExpenses";
-import { Icon } from "react-native-paper";
-
-const TabArr = [
-  {
-    route: "Home",
-    label: "Home",
-    type: "home",
-    icon: "home-outline",
-    component: AddExpenses
-  },
-  {
-    route: "Search",
-    label: "Wallet",
-    type: "Transactions",
-    icon: "wallet",
-    component: AddExpenses
-  },
-  {
-    route: "Add",
-    label: "Add",
-    type: "plus-square",
-    icon: "plus",
-    component: AddExpenses
-  },
-  {
-    route: "Like",
-    label: "Graph",
-    type: "thumb",
-    icon: "graph",
-    component: AddExpenses
-  },
-  {
-    route: "Account",
-    label: "Profile",
-    type: "Profile",
-    icon: "account",
-    component: AddExpenses
-  }
-];
+import React from "react";
+import { StyleSheet } from "react-native";
+import TabButton from "./bottomNavigation/TabButton";
+import { TabArr } from "../../data/routes";
 
 const Tab = createBottomTabNavigator();
-
-const animate1 = {
-  0: { scale: 0.5, translateY: 7 },
-  0.92: { translateY: -34 },
-  1: { scale: 1.2, translateY: -24 }
-};
-const animate2 = {
-  0: { scale: 1.2, translateY: -24 },
-  1: { scale: 1, translateY: 7 }
-};
-
-const circle1 = {
-  0: { scale: 0 },
-  0.3: { scale: 0.9 },
-  0.5: { scale: 0.2 },
-  0.8: { scale: 0.7 },
-  1: { scale: 1 }
-};
-const circle2 = { 0: { scale: 1 }, 1: { scale: 0 } };
-
-const TabButton = (props) => {
-  const { item, onPress, accessibilityState } = props;
-  const focused = accessibilityState.selected;
-  const viewRef = useRef(null);
-  const circleRef = useRef(null);
-  const textRef = useRef(null);
-  const isDarkMode = useColorScheme() === "dark";
-
-  const { colors } = useTheme();
-  const color = isDarkMode ? "white" : "black";
-  const bgColor = colors.background;
-
-  useEffect(() => {
-    if (focused) {
-      viewRef.current.animate(animate1);
-      circleRef.current.animate(circle1);
-      textRef.current.transitionTo({ scale: 1 });
-    } else {
-      viewRef.current.animate(animate2);
-      circleRef.current.animate(circle2);
-      textRef.current.transitionTo({ scale: 0 });
-    }
-  }, [focused]);
-
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={1}
-      style={styles.container}
-    >
-      <Animatable.View ref={viewRef} duration={1000} style={styles.container}>
-        <View
-          style={[
-            styles.btn,
-            { borderColor: bgColor, backgroundColor: bgColor }
-          ]}
-        >
-          <Animatable.View ref={circleRef} style={styles.circle} />
-          <Icon
-            source={item.icon}
-            color={focused ? "white" : "black"}
-            size={25}
-          />
-        </View>
-        <Animatable.Text ref={textRef} style={[styles.text, { color }]}>
-          {item.label}
-        </Animatable.Text>
-      </Animatable.View>
-    </TouchableOpacity>
-  );
-};
 
 export default function AnimTab1() {
   return (
@@ -154,7 +36,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 70
+    height: 70,
+    position: "relative"
   },
   tabBar: {
     height: 70,
@@ -184,5 +67,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "black",
     fontWeight: "500"
+  },
+  circleOne: {
+    backgroundColor: "#f52d56",
+    width: 40,
+    height: 40,
+    // bottom: 40,
+    // right: 40,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

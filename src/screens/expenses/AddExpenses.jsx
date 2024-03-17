@@ -16,6 +16,7 @@ import { heightFull, widthFull } from "../Splash";
 import { Dropdown } from "react-native-element-dropdown";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { writeDataToFirestore, writeTransactions } from "../../fetch";
+import FloatingButton from "../../routes/FloatingButton";
 
 const AddExpenses = () => {
   const [open, setOpen] = useState(false);
@@ -81,7 +82,7 @@ const AddExpenses = () => {
             fontSize: 20
           }}
         >
-          Expenses
+          Add Expenses
         </Text>
       </View>
       <View className="absolute rounded-[20px] bg-white h-[50vh] top-[27vh] w-[88vw] right-[6vw] px-5 justify-around shadow-lg">
@@ -158,7 +159,6 @@ const AddExpenses = () => {
             <View className="bg-gray-600  px-2 py-1 rounded-full mr-3">
               <Text className=" text-white">+</Text>
             </View>
-
             <Text style={{ color: "#000" }}>Add Invoice</Text>
           </TouchableOpacity>
         </View>
