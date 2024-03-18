@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 1.7 }]
   },
   dropdown: {
-    // height: heightFull * 0.02,
     paddingVertical: 2,
     paddingHorizontal: 10,
     backgroundColor: "white",

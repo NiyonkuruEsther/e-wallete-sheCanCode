@@ -21,7 +21,7 @@ export const TabArr = [
     label: "Add",
     type: "plus-square",
     icon: "plus",
-    component: ""
+    component: AddExpenses
   },
   {
     route: "Like",

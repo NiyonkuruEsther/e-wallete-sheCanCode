@@ -7,7 +7,8 @@ import StackNavigation from "./src/routes/StackNavigation";
 import AddExpenses from "./src/screens/expenses/AddExpenses";
 import Register from "./src/screens/auth/Register";
 import { NavigationContainer } from "@react-navigation/native";
-import AnimTab1 from "./src/routes/BottomsNavigation";
+import AnimTab1 from "./src/routes/bottomNavigation";
+import { EventProvider } from "react-native-outside-press";
 
 LogBox.ignoreAllLogs();
 
@@ -15,8 +16,10 @@ export default function App() {
   // return <AddExpenses />;
   // return <Register />;
   return (
-    <NavigationContainer>
-      <AnimTab1 />
-    </NavigationContainer>
+    <EventProvider style={{ flex: 1 }}>
+      <NavigationContainer>
+        <AnimTab1 />
+      </NavigationContainer>
+    </EventProvider>
   );
 }

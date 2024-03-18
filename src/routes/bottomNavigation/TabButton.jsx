@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +11,7 @@ import * as Animatable from "react-native-animatable";
 import { useTheme } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Icon } from "react-native-paper";
+import OutsidePressHandler from "react-native-outside-press";
 
 const animate1 = {
   0: { scale: 0.5, translateY: 7 },
@@ -30,8 +32,7 @@ const circle1 = {
 };
 const circle2 = { 0: { scale: 1 }, 1: { scale: 0 } };
 
-const TabButton = (props) => {
-  const { item, onPress, accessibilityState } = props;
+const TabButton = ({ item, onPress, accessibilityState }) => {
   const focused = accessibilityState.selected;
   const viewRef = useRef(null);
   const circleRef = useRef(null);
@@ -55,35 +56,32 @@ const TabButton = (props) => {
     }
   }, [focused]);
 
-  useEffect(() => {
-    if (!showAddOptions) {
-      setTimeout(() => {
-        setShowAddOptions(false);
-      }, 700);
-    }
-  }, [showAddOptions]);
+  // useEffect(() => {
+  //   if (!showAddOptions) {
+  //     // setTimeout(() => {
+  //     setShowAddOptions(false);
+  //     // }, 700);
+  //   }
+  // }, [showAddOptions]);
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        onPress();
-        if (item.label === "Add") {
-          setShowAddOptions(!showAddOptions);
-        }
-      }}
-      activeOpacity={1}
-      style={styles.container}
-    >
-      <Animatable.View ref={viewRef} duration={1000} style={styles.container}>
-        <View>
-          {item.label === "Add" && showAddOptions ? (
+    <View style={styles.container}>
+      <Pressable
+        onPress={() => {
+          onPress();
+          if (item.label === "Add") {
+            setShowAddOptions(!showAddOptions);
+          }
+        }}
+        activeOpacity={1}
+      >
+        <Animatable.View ref={viewRef} duration={1000} style={styles.container}>
+          <View>
             <Animatable.View
               style={{
-                flex: 1
+                display: !showAddOptions ? "none" : "flex"
               }}
-              className={`flex-row -left-[6vh] gap-5 absolute bottom-[1vh] ${
-                showAddOptions === false && "bg-black"
-              }`}
+              className={`flex-row -left-[6vh] gap-5 absolute bottom-[1vh]`}
             >
               <View>
                 <TouchableOpacity
@@ -107,33 +105,33 @@ const TabButton = (props) => {
                 <Text>Expense</Text>
               </View>
             </Animatable.View>
-          ) : (
-            console.log(
-              item.label === "Add" && showAddOptions === false,
-              "logged"
-            )
-          )}
-        </View>
+          </View>
 
-        <View
-          style={[
-            styles.btn,
-            { borderColor: bgColor, backgroundColor: bgColor }
-          ]}
-        >
-          <Animatable.View ref={circleRef} style={styles.circle} />
-
-          <Icon
-            source={item.icon}
-            color={focused ? "white" : "black"}
-            size={25}
-          />
-        </View>
-        <Animatable.Text ref={textRef} style={[styles.text, { color }]}>
-          {item.label}
-        </Animatable.Text>
-      </Animatable.View>
-    </TouchableOpacity>
+          <View
+            style={[
+              styles.btn,
+              { borderColor: bgColor, backgroundColor: bgColor }
+            ]}
+          >
+            <Animatable.View ref={circleRef} style={styles.circle} />
+            <OutsidePressHandler
+              onOutsidePress={() => {
+                setShowAddOptions(false);
+              }}
+            >
+              <Icon
+                source={item.icon}
+                color={focused ? "white" : "black"}
+                size={25}
+              />
+            </OutsidePressHandler>
+          </View>
+          <Animatable.Text ref={textRef} style={[styles.text, { color }]}>
+            {item.label}
+          </Animatable.Text>
+        </Animatable.View>
+      </Pressable>
+    </View>
   );
 };
 
