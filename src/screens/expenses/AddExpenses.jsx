@@ -5,18 +5,15 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Platform,
   Keyboard,
   Pressable
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { Picker } from "@react-native-picker/picker";
 import { heightFull, widthFull } from "../Splash";
 import { Dropdown } from "react-native-element-dropdown";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import { writeDataToFirestore, writeTransactions } from "../../fetch";
-import FloatingButton from "../../routes/FloatingButton";
+import { writeTransactions } from "../../fetch";
 
 const AddExpenses = () => {
   const [open, setOpen] = useState(false);
@@ -85,7 +82,7 @@ const AddExpenses = () => {
           Add Expenses
         </Text>
       </View>
-      <View className="absolute rounded-[20px] bg-white h-[50vh] top-[27vh] w-[88vw] right-[6vw] px-5 justify-around shadow-lg">
+      <View className="absolute rounded-[20px] bg-white h-[55vh] top-[18vh] w-[88vw] right-[6vw] px-5 justify-around shadow-lg">
         <View className="gap-y-3">
           <Text>CATEGORY</Text>
           <Dropdown
@@ -170,10 +167,11 @@ const AddExpenses = () => {
 const styles = StyleSheet.create({
   oval: {
     width: widthFull,
-    height: heightFull / 2.5,
+    height: heightFull * 0.32,
     borderBottomEndRadius: 500,
     borderBottomStartRadius: 500,
-    transform: [{ scaleX: 1.7 }]
+    overflow: "hidden",
+    transform: [{ scaleX: 2 }]
   },
   dropdown: {
     paddingVertical: 2,

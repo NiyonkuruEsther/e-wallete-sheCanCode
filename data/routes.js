@@ -1,3 +1,4 @@
+import Profile from "../src/screens/Profile";
 import Login from "../src/screens/auth/Login";
 import AddExpenses from "../src/screens/expenses/AddExpenses";
 
@@ -35,6 +36,6 @@ export const TabArr = [
     label: "Profile",
     type: "Profile",
     icon: "account",
-    component: AddExpenses
+    component: Profile
   }
 ];
