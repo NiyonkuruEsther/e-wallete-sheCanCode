@@ -10,16 +10,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import AnimTab1 from "./src/routes/bottomNavigation";
 import { EventProvider } from "react-native-outside-press";
 
+import History from "./src/screens/history/History";
+
 LogBox.ignoreAllLogs();
 
 export default function App() {
   // return <AddExpenses />;
   // return <Register />;
   return (
-    <EventProvider style={{ flex: 1 }}>
-      <NavigationContainer>
-        <AnimTab1 />
-      </NavigationContainer>
-    </EventProvider>
+    // <EventProvider style={{ flex: 1 }}>
+    //   <NavigationContainer>
+    //     <AnimTab1 />
+    //   </NavigationContainer>
+    // </EventProvider>
+    <History/>
   );
 }
