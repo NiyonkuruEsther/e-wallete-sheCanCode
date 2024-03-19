@@ -3,6 +3,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import TabButton from "./TabButton";
 import { TabArr } from "../../../data/routes";
+import AddIncome from "../../screens/income/AddIncome";
+import AddExpenses from "../../screens/expenses/AddExpenses";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +29,22 @@ export default function AnimTab1() {
           />
         );
       })}
+      <Tab.Screen
+        name="AddExpense"
+        component={AddExpenses}
+        options={{
+          headerShown: false,
+          tabBarButton: () => null
+        }}
+      />
+      <Tab.Screen
+        name="AddIncome"
+        component={AddIncome}
+        options={{
+          headerShown: false,
+          tabBarButton: () => null
+        }}
+      />
     </Tab.Navigator>
   );
 }

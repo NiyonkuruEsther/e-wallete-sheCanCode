@@ -8,7 +8,7 @@ import {
   useColorScheme
 } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { useTheme } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Icon } from "react-native-paper";
 import OutsidePressHandler from "react-native-outside-press";
@@ -33,6 +33,7 @@ const circle1 = {
 const circle2 = { 0: { scale: 1 }, 1: { scale: 0 } };
 
 const TabButton = ({ item, onPress, accessibilityState }) => {
+  const navigation = useNavigation();
   const focused = accessibilityState.selected;
   const viewRef = useRef(null);
   const circleRef = useRef(null);
@@ -55,14 +56,6 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
       textRef.current.transitionTo({ scale: 0 });
     }
   }, [focused]);
-
-  // useEffect(() => {
-  //   if (!showAddOptions) {
-  //     // setTimeout(() => {
-  //     setShowAddOptions(false);
-  //     // }, 700);
-  //   }
-  // }, [showAddOptions]);
 
   return (
     <View style={styles.container}>
@@ -87,15 +80,19 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
                 <TouchableOpacity
                   style={styles.circleOne}
                   className="rotate-180"
+                  onPress={() => {
+                    navigation.navigate("AddIncome");
+                    setShowAddOptions(false);
+                  }}
                 >
                   <Ionicons name="enter-outline" size={25} color="#FFFF" />
                 </TouchableOpacity>
-                <Text>Topup</Text>
+                <Text>Income</Text>
               </View>
               <View>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("Add expenses");
+                    navigation.navigate("AddExpense");
                     setShowAddOptions(false);
                   }}
                   style={styles.circleOne}

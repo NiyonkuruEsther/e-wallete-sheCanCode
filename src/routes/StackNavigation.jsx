@@ -9,6 +9,7 @@ import Register from "../screens/auth/Register";
 import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
 import AddExpenses from "../screens/expenses/AddExpenses";
+import AddIncome from "../screens/income/AddIncome";
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,8 @@ function StackNavigation() {
         <Stack.Screen name="Forget" component={Forget} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Welcome" component={WelcomePage} />
-        <Stack.Screen name="Add expenses" component={AddExpenses} />
+        <Stack.Screen name="AddExpenses" component={AddExpenses} />
+        <Stack.Screen name="AddIncome" component={AddIncome} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

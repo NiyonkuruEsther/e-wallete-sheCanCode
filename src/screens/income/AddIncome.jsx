@@ -13,16 +13,11 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { heightFull, widthFull } from "../Splash";
 import { Dropdown } from "react-native-element-dropdown";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import { ImagePicker } from "expo-image-picker";
-import { RNCamera } from "react-native-camera";
-import { Camera, CameraType } from "expo-camera";
+import { writeTransactions } from "../../fetch";
 
-const AddExpenses = () => {
+const AddIncome = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [cam, setCam] = useState(false);
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
 
   const [selectedValue, setSelectedValue] = useState("food");
   const [data, setData] = useState({
@@ -31,15 +26,6 @@ const AddExpenses = () => {
     amount: 600,
     date: new Date()
   });
-
-  async function toggleCameraType() {
-    console.log("sdfsdfsadf", permission.status);
-    await Camera.requestCameraPermissionsAsync();
-
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  }
 
   const optionData = [
     { label: "Item 1", value: "1" },
@@ -72,68 +58,6 @@ const AddExpenses = () => {
     Keyboard.dismiss();
   };
 
-  const renderOcrElement = (element) => {
-    return (
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: "blue",
-          position: "absolute",
-          left: 0,
-          top: element.bounds.origin.y,
-          right: 0,
-          bottom: 50
-        }}
-      >
-        <Text>{element.text}</Text>
-      </View>
-    );
-  };
-  const ocrElements = [];
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-
-    // pick an image from gallery
-    console.log(false, "scanned");
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1
-    });
-
-    // if the user successfully picks an image then we check if the image has a QR code
-    if (result && result.assets[0].uri) {
-      try {
-        const scannedResults = await BarCodeScanner.scanFromURLAsync(
-          result.assets[0].uri
-        );
-
-        const dataNeeded = scannedResults[0].data;
-        setDisplayText(dataNeeded);
-      } catch (error) {
-        // if there this no QR code
-        setDisplayText("No QR Code Found");
-        setTimeout(() => setDisplayText(""), 4000);
-      }
-    }
-  };
-
-  const textRecognized = ({ textBlocks }) => {
-    textBlocks.forEach((textBlock) => {
-      textBlock.components.forEach((textLine) => {
-        ocrElements.push({
-          bounds: textLine.bounds,
-          text: textLine.value
-        });
-      });
-    });
-    this.setState({
-      ocrElements: ocrElements
-    });
-  };
-
   return (
     <Pressable className="flex-1 relative" onPress={dismissKeyboard}>
       <LinearGradient
@@ -155,10 +79,10 @@ const AddExpenses = () => {
             fontSize: 20
           }}
         >
-          Add Expenses
+          Add Income
         </Text>
       </View>
-      <View className="absolute rounded-[20px] bg-white h-[60vh] top-[18vh] w-[88vw] right-[6vw] px-5 justify-around shadow-lg">
+      <View className="absolute rounded-[20px] bg-white h-[55vh] top-[18vh] w-[88vw] right-[6vw] px-5 justify-around shadow-lg">
         <View className="gap-y-3">
           <Text>CATEGORY</Text>
           <Dropdown
@@ -188,17 +112,6 @@ const AddExpenses = () => {
             )}
             renderItem={renderItem}
           />
-        </View>
-        <View className="gap-y-3">
-          <Text>NAME</Text>
-          <View className="group flex-row justify-between border border-lighGray rounded-lg h-[5vh] items-center px-3 focus:border-bluePrimary focus:border-2 ">
-            <TextInput
-              placeholder="Expense name"
-              style=""
-              className="h-full flex-1"
-              keyboardType="numeric"
-            />
-          </View>
         </View>
         <View className="gap-y-3">
           <Text>AMOUNT</Text>
@@ -235,12 +148,9 @@ const AddExpenses = () => {
         </View>
 
         <View className="gap-y-3">
-          <Text>INVOICE</Text>
+          <Text>Invoices</Text>
           <TouchableOpacity
-            onPress={() => {
-              setCam(true);
-              toggleCameraType();
-            }}
+            onPress={() => writeTransactions("expenses", data)}
             className="flex-row justify-center items-center py-2 border border-lighGray rounded-lg"
           >
             <View className="bg-gray-600  px-2 py-1 rounded-full mr-3">
@@ -250,18 +160,6 @@ const AddExpenses = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {cam && permission.granted && (
-        <View className="absolute top-0 justify-center items-center h-full w-full bg-white ">
-          <Camera
-            type={CameraType.back}
-            className="w-[80vw] h-[60vh]"
-            onBarCodeScanned={() => console.log("scanned")}
-          />
-          <Pressable onPress={() => setCam(false)} className="pt-5">
-            <Text className="text-base">Close camera</Text>
-          </Pressable>
-        </View>
-      )}
     </Pressable>
   );
 };
@@ -311,4 +209,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddExpenses;
+export default AddIncome;
