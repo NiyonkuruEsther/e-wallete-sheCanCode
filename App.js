@@ -9,6 +9,7 @@ import Register from "./src/screens/auth/Register";
 import { NavigationContainer } from "@react-navigation/native";
 import AnimTab1 from "./src/routes/bottomNavigation";
 import { EventProvider } from "react-native-outside-press";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 LogBox.ignoreAllLogs();
 

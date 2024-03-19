@@ -150,7 +150,7 @@ const AddExpenses = () => {
         <View className="gap-y-3">
           <Text>Invoices</Text>
           <TouchableOpacity
-            onPress={() => writeTransactions("expenses", data, userId)}
+            onPress={() => writeTransactions("expenses", data)}
             className="flex-row justify-center items-center py-2 border border-lighGray rounded-lg"
           >
             <View className="bg-gray-600  px-2 py-1 rounded-full mr-3">

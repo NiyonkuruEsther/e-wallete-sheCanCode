@@ -1,4 +1,5 @@
 import Profile from "../src/screens/Profile";
+import Statistics from "../src/screens/Statistics";
 import Login from "../src/screens/auth/Login";
 import AddExpenses from "../src/screens/expenses/AddExpenses";
 
@@ -29,7 +30,7 @@ export const TabArr = [
     label: "Graph",
     type: "thumb",
     icon: "graph",
-    component: Login
+    component: Statistics
   },
   {
     route: "Account",
