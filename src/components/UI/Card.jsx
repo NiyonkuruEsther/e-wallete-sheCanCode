@@ -11,16 +11,16 @@ function Card() {
           <Text style={styles.text}>Total Balance   <AntDesign
             name="up"
             size={15}
-            color="white"
+            color="black"
           /></Text>
           <Text style={styles.amount}>$203840</Text>
 
           <Text style={styles.text}> <AntDesign
             name="downcircleo"
             size={15}
-            color="white"
+            color="black"
           />    Income</Text>
-          <Text style={{color:'white',fontSize:20,fontWeight:500}}>$102350</Text>
+          <Text style={{color:'black',fontSize:20,fontWeight:500}}>$102350</Text>
         </View>
 
         
@@ -29,11 +29,15 @@ function Card() {
             <Text style={styles.icon}><AntDesign
               name="dotchart"
               size={20}
-              color="white"
+              color="black"
             /></Text>
             <Text style={styles.space}></Text>
-            <Text style={styles.text}>Expenses</Text>
-            <Text style={{color:'white',fontSize:20,fontWeight:500}}>$97760</Text>
+            <Text style={styles.text}> <AntDesign
+            name="upcircleo"
+            size={15}
+            color="black"
+          /> Expenses</Text>
+            <Text style={{color:'black',fontSize:20,fontWeight:500}}>$97760</Text>
           </View>
         </View>
       </View>
@@ -43,17 +47,19 @@ function Card() {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginTop: 30,
-    paddingLeft: 10,
     marginLeft: 10,
-    padding: 10,
+    position:'absolute',
+    padding: 20,
+    marginTop:160,
+    marginLeft:35,
     borderRadius: 10,
   },
   rowContainer: {
     flexDirection: 'row',
-    backgroundColor: '#17B7BD', 
+    backgroundColor: 'white', 
     borderRadius: 10,
-    padding:10,
+    position:'absolute',
+    padding:30,
     overflow: 'hidden',
   },
   column: {
@@ -64,12 +70,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   text: {
-    color: 'white',
+    color: 'black',
     fontWeight: '700',
     marginBottom: 5,
   },
   amount: {
-    color: 'white',
+    color: 'black',
     fontWeight: '800',
     fontSize: 35,
     marginBottom: 10,
@@ -84,9 +90,9 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
+        shadowOffset: { width: 1, height: 5 },
+        shadowOpacity: 0.8,
+        shadowRadius: 3,
       },
       android: {
         elevation: 5,

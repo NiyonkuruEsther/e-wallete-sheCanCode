@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
   oval: {
     width: widthFull,
     height: heightFull / 2.5,
+    overflow:'hidden',
     borderBottomEndRadius: 500,
     borderBottomStartRadius: 500,
     transform: [{ scaleX: 1.7 }]
