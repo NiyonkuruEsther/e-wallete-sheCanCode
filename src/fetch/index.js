@@ -20,18 +20,6 @@ export const writeTransactions = async (collectionName, data) => {
     // response.forEach((doc) => {
     //   arr.push({ id: doc.id, data: doc.data() });
     // });
-    // await getDocs(collection(firestoreDB, collectionName))
-    //   .then((res) => {
-    //     res.forEach((doc) => {
-    //       arr.push({ id: doc.id, data: doc.data() });
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error getting documents: ", error);
-    //   });
-    // const documentSnapshot = await getDoc(
-    //   doc(firestoreDB, collectionName, "0fEUAbPJFhF2QoTdn2OL")
-    // );
 
     // if (documentSnapshot.exists()) {
     //   await updateDoc(
@@ -46,4 +34,19 @@ export const writeTransactions = async (collectionName, data) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const readUsers = async () => {
+  let arr = [];
+
+  await getDocs(collection(firestoreDB, "users"))
+    .then((res) => {
+      res.forEach((doc) => {
+        arr.push({ id: doc.id, data: doc.data() });
+      });
+    })
+    .catch((error) => {
+      console.error("Error getting users: ", error);
+    });
+  return arr;
 };

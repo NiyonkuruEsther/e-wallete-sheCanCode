@@ -8,7 +8,7 @@ import AddExpenses from "../../screens/expenses/AddExpenses";
 
 const Tab = createBottomTabNavigator();
 
-export default function AnimTab1() {
+export default function BottomNavigation() {
   return (
     <Tab.Navigator
       screenOptions={{

@@ -6,7 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
-  Pressable
+  Pressable,
+  Button,
+  Modal
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -16,6 +18,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { ImagePicker } from "expo-image-picker";
 import { RNCamera } from "react-native-camera";
 import { Camera, CameraType } from "expo-camera";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AddExpenses = () => {
   const [open, setOpen] = useState(false);
@@ -23,6 +26,10 @@ const AddExpenses = () => {
   const [cam, setCam] = useState(false);
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [scanned, setScanned] = useState(false);
+  const [text, setText] = useState("Not yet scanned!");
+  const [hasScanned, setHasScanned] = useState([]);
+  const [generatedQRCode, setGeneratedQRCode] = useState(null);
 
   const [selectedValue, setSelectedValue] = useState("food");
   const [data, setData] = useState({
@@ -33,7 +40,6 @@ const AddExpenses = () => {
   });
 
   async function toggleCameraType() {
-    console.log("sdfsdfsadf", permission.status);
     await Camera.requestCameraPermissionsAsync();
 
     setType((current) =>
@@ -72,66 +78,20 @@ const AddExpenses = () => {
     Keyboard.dismiss();
   };
 
-  const renderOcrElement = (element) => {
-    return (
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: "blue",
-          position: "absolute",
-          left: 0,
-          top: element.bounds.origin.y,
-          right: 0,
-          bottom: 50
-        }}
-      >
-        <Text>{element.text}</Text>
-      </View>
-    );
-  };
-  const ocrElements = [];
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    setText(data);
+    setHasScanned([...hasScanned, data]);
+    console.log("Type: ", type, "\ndata: ", data);
 
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-
-    // pick an image from gallery
-    console.log(false, "scanned");
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1
-    });
-
-    // if the user successfully picks an image then we check if the image has a QR code
-    if (result && result.assets[0].uri) {
-      try {
-        const scannedResults = await BarCodeScanner.scanFromURLAsync(
-          result.assets[0].uri
-        );
-
-        const dataNeeded = scannedResults[0].data;
-        setDisplayText(dataNeeded);
-      } catch (error) {
-        // if there this no QR code
-        setDisplayText("No QR Code Found");
-        setTimeout(() => setDisplayText(""), 4000);
-      }
-    }
+    AsyncStorage.setItem("scannedItems", JSON.stringify([...hasScanned, data]))
+      .then(() => console.log("Scanned items saved successfully"))
+      .catch((error) => console.error("Error saving scanned items:", error));
   };
 
-  const textRecognized = ({ textBlocks }) => {
-    textBlocks.forEach((textBlock) => {
-      textBlock.components.forEach((textLine) => {
-        ocrElements.push({
-          bounds: textLine.bounds,
-          text: textLine.value
-        });
-      });
-    });
-    this.setState({
-      ocrElements: ocrElements
-    });
+  const generateQRCode = () => {
+    const concatenatedText = hasScanned.join(", ");
+    setGeneratedQRCode(concatenatedText);
   };
 
   return (
@@ -251,12 +211,43 @@ const AddExpenses = () => {
         </View>
       </View>
       {cam && permission.granted && (
-        <View className="absolute top-0 justify-center items-center h-full w-full bg-white ">
+        <View className="absolute top-0 justify-center items-center h-full w-full bg-white">
           <Camera
             type={CameraType.back}
-            className="w-[80vw] h-[60vh]"
-            onBarCodeScanned={() => console.log("scanned")}
+            className="w-[60vw] h-[30vh] mb-3"
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           />
+          {hasScanned.map((item, index) => (
+            <View key={index} className="px-5">
+              <Text style={{ paddingVertical: 7 }}>
+                {index + 1}.{item}
+              </Text>
+            </View>
+          ))}
+
+          <View
+            style={{
+              paddingTop: 15,
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              gap: 10
+            }}
+          >
+            <Button
+              title="Scan Again"
+              backgroundColor="#2c2f99"
+              color="black"
+              onPress={() => setScanned(false)}
+            />
+            <Button
+              title="Get QR code"
+              backgroundColor="#2c2f99"
+              color="black"
+              onPress={generateQRCode}
+            />
+          </View>
+
           <Pressable onPress={() => setCam(false)} className="pt-5">
             <Text className="text-base">Close camera</Text>
           </Pressable>

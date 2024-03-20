@@ -4,14 +4,55 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Platform
+  Platform,
+  Pressable,
+  Modal,
+  KeyboardAvoidingView,
+  SafeAreaView
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightFull, widthFull } from "./Splash";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { FIREBASE_AUTH } from "../../FirebaseConfig";
+import { readUsers } from "../fetch";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
+import { SignUpSchema } from "../schema";
+import { GradientHeader } from "../components/typography";
+import InputLabel from "../components/UI/InputLabel";
+import Button from "../components/UI/Button";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
+  const auth = FIREBASE_AUTH;
+  const currentUser = auth.currentUser;
+  const [user, setUser] = useState({});
+  const [editProfile, setEditProfile] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const users = await readUsers();
+      users.forEach((user) => {
+        user?.data?.email === currentUser?.email && setUser(user.data);
+      });
+    })();
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isDirty, isSubmitted },
+    watch,
+    reset,
+    clearErrors
+  } = useForm({
+    resolver: yupResolver(SignUpSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirm_password: ""
+    }
+  });
   return (
     <View>
       <LinearGradient
@@ -49,17 +90,104 @@ const Profile = () => {
           className="rounded-full"
         />
         <View className="items-center">
-          <Text className="text-base font-semibold">John Doe</Text>
+          <Text className="text-base font-semibold">{user?.name}</Text>
           <Text className="text-bluePrimary font-semibold">
-            JohnDoe@gmail.com
+            {currentUser?.email}
           </Text>
         </View>
 
         <View className="self-start px-5 pt-10 ">
-          <View className="flex-row items-center gap-4 pb-7">
+          <Pressable
+            onPress={() => {
+              setEditProfile(true);
+            }}
+            className="flex-row items-center gap-4 pb-7"
+          >
             <AntDesign name="edit" style={{ color: "gray", fontSize: 25 }} />
             <Text className="text-lg">Edit Profile</Text>
-          </View>
+          </Pressable>
+
+          {editProfile && (
+            <Modal>
+              <KeyboardAvoidingView
+                behavior="padding"
+                className=" bg-transparent h-full items-center justify-center"
+                // className="px-5 justify-between bg-white h-[60vh] w-[80vw]"
+              >
+                <SafeAreaView className="bg-white">
+                  <View className="">
+                    <View className="items-center gap-y-3 pb-5">
+                      <View>
+                        <Controller
+                          control={control}
+                          rules={{
+                            required: true
+                          }}
+                          render={({ field: { onChange, value } }) => (
+                            <InputLabel
+                              label="Your name"
+                              onChange={onChange}
+                              value={currentUser?.name}
+                              error={errors.name}
+                              isValid={isDirty && !errors.name && isSubmitted}
+                            />
+                          )}
+                          name="name"
+                        />
+                        {errors.name && (
+                          <Text className="text-red-500 pt-1">
+                            {errors.name.message}
+                          </Text>
+                        )}
+                      </View>
+                      <View>
+                        <Controller
+                          control={control}
+                          rules={{
+                            required: true
+                          }}
+                          render={({ field: { onChange, value } }) => (
+                            <InputLabel
+                              label=" Email"
+                              onChange={onChange}
+                              value={currentUser?.email}
+                              error={errors.email}
+                              isValid={isDirty && !errors.email && isSubmitted}
+                            />
+                          )}
+                          name="email"
+                        />
+                        {errors.email && (
+                          <Text className="text-red-500 pt-1">
+                            {errors.email.message}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                    <View className="flex-row px-5">
+                      <View className="w-1/2 pr-3">
+                        <Button
+                          backgroundStyle={"gradient"}
+                          title="Save"
+                          onPress={handleSubmit()}
+                        />
+                      </View>
+                      <Pressable className="w-1/2 pl-3">
+                        <Button
+                          backgroundStyle={"gradient"}
+                          title="Close"
+                          onPress={() => {
+                            setEditProfile(false);
+                            clearErrors(["name", "email"]);
+                          }}
+                        />
+                      </Pressable>
+                    </View>
+                  </View>
+                </SafeAreaView>
+              </KeyboardAvoidingView>
+            </Modal>
+          )}
 
           <View className="flex-row items-center gap-4 pb-7">
             <AntDesign
@@ -74,13 +202,19 @@ const Profile = () => {
             <Text className="text-lg">Policy and security</Text>
           </View>
 
-          <View className="flex-row items-center gap-4">
+          <Pressable
+            onPress={() => {
+              auth.signOut();
+              navigation.navigate("Welcome");
+            }}
+            className="flex-row items-center gap-4"
+          >
             <AntDesign
               name="logout"
               style={{ color: "#CC0000", fontSize: 25 }}
             />
             <Text className="text-lg">Logout</Text>
-          </View>
+          </Pressable>
         </View>
       </View>
     </View>

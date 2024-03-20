@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, Pressable } from "react-native";
+import { Text, StyleSheet, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { GradientHeader } from "../typography";
 
@@ -23,9 +23,9 @@ const Button = ({ onPress, title, backgroundStyle }) => {
         {backgroundStyle === "white" ? (
           <GradientHeader text={title} />
         ) : (
-          <TouchableOpacity style={{ width: "auto" }}>
+          <Text style={{ width: "auto" }}>
             <Text style={styles.buttonText}>{title}</Text>
-          </TouchableOpacity>
+          </Text>
         )}
       </LinearGradient>
     </Pressable>

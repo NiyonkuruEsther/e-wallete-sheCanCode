@@ -19,7 +19,7 @@ export default function App() {
   return (
     <EventProvider style={{ flex: 1 }}>
       <NavigationContainer>
-        <AnimTab1 />
+        <StackNavigation />
       </NavigationContainer>
     </EventProvider>
   );

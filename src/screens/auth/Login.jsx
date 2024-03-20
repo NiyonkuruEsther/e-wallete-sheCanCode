@@ -53,6 +53,7 @@ function Login({ navigation }) {
         password: "",
         confirm_password: ""
       });
+      navigation.navigate("BottomNavigation");
     } catch (error) {
       setIsLoggedIn(false);
       if (error.code === "auth/too-many-requests") {
