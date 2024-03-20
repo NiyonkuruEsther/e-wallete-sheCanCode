@@ -9,12 +9,13 @@ import {
 } from "firebase/firestore";
 import { firestoreDB } from "../../FirebaseConfig";
 
-export const writeTransactions = async (collectionName, data) => {
+export const writeTransactions = async (collectionName, data, userId) => {
   try {
     const docRef = await addDoc(collection(firestoreDB, collectionName), {
-      ...data
-      // user: doc(firestoreDB, "users", userId)
+      ...data,
+      user: doc(firestoreDB, "users", userId)
     });
+    console.log("transaction registered successfully");
     // let arr = [];
     // const response = await getDocs(collection(firestoreDB, collectionName));
     // response.forEach((doc) => {

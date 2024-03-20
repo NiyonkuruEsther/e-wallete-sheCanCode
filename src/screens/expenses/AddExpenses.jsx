@@ -19,6 +19,7 @@ import { ImagePicker } from "expo-image-picker";
 import { RNCamera } from "react-native-camera";
 import { Camera, CameraType } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ScrollView } from "react-native-gesture-handler";
 
 const AddExpenses = () => {
   const [open, setOpen] = useState(false);
@@ -32,16 +33,16 @@ const AddExpenses = () => {
   const [generatedQRCode, setGeneratedQRCode] = useState(null);
 
   const [selectedValue, setSelectedValue] = useState("food");
-  const [data, setData] = useState({
+  const [expensesData, setExpensesData] = useState({
     name: "Fanta",
     category: "Food",
     amount: 600,
-    date: new Date()
+    date: new Date(),
+    invoice: []
   });
 
   async function toggleCameraType() {
     await Camera.requestCameraPermissionsAsync();
-
     setType((current) =>
       current === CameraType.back ? CameraType.front : CameraType.back
     );
@@ -78,20 +79,33 @@ const AddExpenses = () => {
     Keyboard.dismiss();
   };
 
+  const replaceIfContains = (newData, replaceData) => {
+    setHasScanned((prevArray) => {
+      const index = prevArray.findIndex(
+        (item) => JSON.stringify(item) === JSON.stringify(newData)
+      );
+      if (index !== -1) {
+        const newArray = [...prevArray];
+        newArray[index] = replaceData;
+        return newArray;
+      }
+      console.log("item already scanned");
+      return prevArray;
+    });
+  };
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data);
-    setHasScanned([...hasScanned, data]);
-    console.log("Type: ", type, "\ndata: ", data);
+    replaceIfContains(data, data);
 
-    AsyncStorage.setItem("scannedItems", JSON.stringify([...hasScanned, data]))
-      .then(() => console.log("Scanned items saved successfully"))
-      .catch((error) => console.error("Error saving scanned items:", error));
-  };
-
-  const generateQRCode = () => {
-    const concatenatedText = hasScanned.join(", ");
-    setGeneratedQRCode(concatenatedText);
+    // AsyncStorage.setItem("scannedItems", JSON.stringify([...hasScanned, data]))
+    //   .then(() => console.log("Scanned items saved successfully"))
+    //   .catch((error) => console.error("Error saving scanned items:", error));
+    setExpensesData({
+      ...expensesData,
+      invoice: hasScanned
+    });
+    console.log(expensesData);
   };
 
   return (
@@ -211,7 +225,14 @@ const AddExpenses = () => {
         </View>
       </View>
       {cam && permission.granted && (
-        <View className="absolute top-0 justify-center items-center h-full w-full bg-white">
+        <ScrollView
+          className="absolute top-0 h-full w-full bg-white"
+          contentContainerStyle={{
+            flex: 1,
+            justifyContent: "center",
+            alignContent: "center"
+          }}
+        >
           <Camera
             type={CameraType.back}
             className="w-[60vw] h-[30vh] mb-3"
@@ -240,18 +261,12 @@ const AddExpenses = () => {
               color="black"
               onPress={() => setScanned(false)}
             />
-            <Button
-              title="Get QR code"
-              backgroundColor="#2c2f99"
-              color="black"
-              onPress={generateQRCode}
-            />
           </View>
 
           <Pressable onPress={() => setCam(false)} className="pt-5">
             <Text className="text-base">Close camera</Text>
           </Pressable>
-        </View>
+        </ScrollView>
       )}
     </Pressable>
   );
