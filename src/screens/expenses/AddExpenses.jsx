@@ -7,18 +7,14 @@ import {
   TouchableOpacity,
   Keyboard,
   Pressable,
-  Button,
-  Modal
+  Button
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { heightFull, widthFull } from "../Splash";
 import { Dropdown } from "react-native-element-dropdown";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import { ImagePicker } from "expo-image-picker";
-import { RNCamera } from "react-native-camera";
 import { Camera, CameraType } from "expo-camera";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ScrollView } from "react-native-gesture-handler";
 
 const AddExpenses = () => {
@@ -79,33 +75,21 @@ const AddExpenses = () => {
     Keyboard.dismiss();
   };
 
-  const replaceIfContains = (newData, replaceData) => {
-    setHasScanned((prevArray) => {
-      const index = prevArray.findIndex(
-        (item) => JSON.stringify(item) === JSON.stringify(newData)
-      );
-      if (index !== -1) {
-        const newArray = [...prevArray];
-        newArray[index] = replaceData;
-        return newArray;
-      }
-      console.log("item already scanned");
-      return prevArray;
-    });
-  };
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data);
-    replaceIfContains(data, data);
 
-    // AsyncStorage.setItem("scannedItems", JSON.stringify([...hasScanned, data]))
-    //   .then(() => console.log("Scanned items saved successfully"))
-    //   .catch((error) => console.error("Error saving scanned items:", error));
-    setExpensesData({
-      ...expensesData,
-      invoice: hasScanned
-    });
-    console.log(expensesData);
+    if (!hasScanned.includes(data)) {
+      const updatedScannedItems = [...hasScanned, data];
+      setExpensesData({
+        ...expensesData,
+        invoice: updatedScannedItems
+      });
+
+      setHasScanned(updatedScannedItems);
+    } else {
+      console.log("Item already exists");
+    }
   };
 
   return (
@@ -226,11 +210,11 @@ const AddExpenses = () => {
       </View>
       {cam && permission.granted && (
         <ScrollView
-          className="absolute top-0 h-full w-full bg-white"
+          className="absolute top-0 h-full w-full bg-white "
           contentContainerStyle={{
             flex: 1,
             justifyContent: "center",
-            alignContent: "center"
+            alignItems: "center"
           }}
         >
           <Camera
@@ -238,6 +222,8 @@ const AddExpenses = () => {
             className="w-[60vw] h-[30vh] mb-3"
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           />
+          {console.log(hasScanned)}
+
           {hasScanned.map((item, index) => (
             <View key={index} className="px-5">
               <Text style={{ paddingVertical: 7 }}>
@@ -252,7 +238,9 @@ const AddExpenses = () => {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              gap: 10
+              gap: 10,
+              alignItems: "center",
+              justifyContent: "center"
             }}
           >
             <Button
@@ -261,11 +249,10 @@ const AddExpenses = () => {
               color="black"
               onPress={() => setScanned(false)}
             />
+            <Pressable onPress={() => setCam(false)}>
+              <Text className="text-base">Close camera</Text>
+            </Pressable>
           </View>
-
-          <Pressable onPress={() => setCam(false)} className="pt-5">
-            <Text className="text-base">Close camera</Text>
-          </Pressable>
         </ScrollView>
       )}
     </Pressable>
