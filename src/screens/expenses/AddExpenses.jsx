@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { Camera, CameraType } from "expo-camera";
 import { ScrollView } from "react-native-gesture-handler";
+import { writeTransactions } from "../../fetch";
 
 const AddExpenses = () => {
   const [open, setOpen] = useState(false);
@@ -26,15 +27,31 @@ const AddExpenses = () => {
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("Not yet scanned!");
   const [hasScanned, setHasScanned] = useState([]);
-  const [generatedQRCode, setGeneratedQRCode] = useState(null);
+  const [user, setUser] = useState({});
 
-  const [selectedValue, setSelectedValue] = useState("food");
+  const optionData = [
+    { label: "Social Media", value: "1" },
+    { label: "Food", value: "2" },
+    { label: "Clothing", value: "3" },
+    { label: "Transport", value: "4" },
+    { label: "Housing", value: "5" }
+  ];
+
   const [expensesData, setExpensesData] = useState({
-    name: "Fanta",
-    category: "Food",
-    amount: 600,
+    name: "",
+    category: "",
+    amount: 0,
     date: new Date(),
     invoice: []
+  });
+
+  useEffect(() => {
+    (async () => {
+      const users = await readUsers();
+      users.forEach((user) => {
+        user?.data?.email === currentUser?.email && setUser(user.data);
+      });
+    })();
   });
 
   async function toggleCameraType() {
@@ -43,17 +60,6 @@ const AddExpenses = () => {
       current === CameraType.back ? CameraType.front : CameraType.back
     );
   }
-
-  const optionData = [
-    { label: "Item 1", value: "1" },
-    { label: "Item 2", value: "2" },
-    { label: "Item 3", value: "3" },
-    { label: "Item 4", value: "4" },
-    { label: "Item 5", value: "5" },
-    { label: "Item 6", value: "6" },
-    { label: "Item 7", value: "7" },
-    { label: "Item 8", value: "8" }
-  ];
 
   const renderItem = (item) => {
     return (
@@ -101,12 +107,6 @@ const AddExpenses = () => {
         style={styles.oval}
       ></LinearGradient>
       <View className="absolute flex-row bg-red- top-[8vh] w-full items-center justify-between px-5">
-        <TouchableOpacity>
-          <AntDesign
-            name="arrowleft"
-            style={{ color: "white", fontSize: 20 }}
-          />
-        </TouchableOpacity>
         <Text
           style={{
             color: "white",
@@ -134,7 +134,7 @@ const AddExpenses = () => {
             searchPlaceholder="Search..."
             value={value}
             onChange={(item) => {
-              setValue(item.value);
+              setExpensesData({ ...expensesData, category: item });
             }}
             renderLeftIcon={() => (
               <AntDesign
@@ -153,8 +153,11 @@ const AddExpenses = () => {
             <TextInput
               placeholder="Expense name"
               style=""
+              value={expensesData.name}
+              onChangeText={(name) =>
+                setExpensesData({ ...expensesData, name: name })
+              }
               className="h-full flex-1"
-              keyboardType="numeric"
             />
           </View>
         </View>
@@ -164,10 +167,18 @@ const AddExpenses = () => {
             <TextInput
               placeholder="Enter amount"
               style=""
+              value={expensesData.amount}
+              onChangeText={(amount) =>
+                setExpensesData({ ...expensesData, amount: amount })
+              }
               className="h-full flex-1"
               keyboardType="numeric"
             />
-            <Text className="">Clear</Text>
+            <Pressable
+              onPress={() => setExpensesData({ ...expensesData, amount: 0 })}
+            >
+              <Text className="">Clear</Text>
+            </Pressable>
           </View>
         </View>
         <View className="gap-y-3">
@@ -207,6 +218,10 @@ const AddExpenses = () => {
             <Text style={{ color: "#000" }}>Add Invoice</Text>
           </TouchableOpacity>
         </View>
+        <Button
+          title="Save"
+          onPress={() => writeTransactions("expenses", expensesData, user.id)}
+        />
       </View>
       {cam && permission.granted && (
         <ScrollView

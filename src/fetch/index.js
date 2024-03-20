@@ -43,7 +43,7 @@ export const readUsers = async () => {
   await getDocs(collection(firestoreDB, "users"))
     .then((res) => {
       res.forEach((doc) => {
-        arr.push({ id: doc.id, data: doc.data() });
+        arr.push({ ...doc.data(), id: doc.id });
       });
     })
     .catch((error) => {
