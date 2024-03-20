@@ -53,22 +53,26 @@ const History = () => {
 <TouchableOpacity>
         <Text style={{color:'black',fontSize:20, paddingLeft:10}}> Transactions History</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity>
         <Text
           style={{
             color: "grey",
             paddingRight:10
           }}
         >
-        see more ...
+        see all
         
         </Text>
+        </TouchableOpacity>
+       
 
 
         
 </View>
       
 <View   className=" flex-row bg-red- top-[20vh] w-full items-center justify-between px-5">
-<View style={{ backgroundColor: 'grey', padding:8, borderRadius: 30 }}>
+<View style={{ backgroundColor: 'rgb(240,253,255)', padding:8, borderRadius: 5 }}>
     <Image
       source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsRXfsQi6DlCivDRmPiGlYgyMsF6OQKnvi0w&usqp=CAU' }}
       style={{ width: 50, height: 50, borderRadius: 50 }}
@@ -84,7 +88,7 @@ const History = () => {
 
 
 <View   className=" flex-row bg-red- top-[22vh] w-full items-center justify-between px-5">
-<View style={{ backgroundColor: 'grey', padding:8, borderRadius: 30 }}>
+<View style={{ backgroundColor: 'rgb(240,253,255)', padding:8, borderRadius: 5 }}>
     <Image
       source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS5TH69cfv65iJTPuoZ78cQ0oktt-YCPdUAw&usqp=CAU' }}
       style={{ width: 50, height: 50, borderRadius: 50 }}
@@ -95,12 +99,12 @@ const History = () => {
       <Text style={{ color: 'black', fontSize: 20 }}>Transport and fees</Text>
       <Text style={{ color: 'grey' }}>This week</Text>
     </View>
-  <Text style={{ color: 'Green', fontWeight: '500' }}>+ $2000</Text>
+  <Text style={{ color: 'red', fontWeight: '500' }}>+ $1500</Text>
 </View>
 
 
-<View   className=" flex-row  top-[24vh]  items-center justify-between px-5">
-<View style={{ backgroundColor: 'grey', padding:8, borderRadius: 30 }}>
+<View   className=" flex-row bg-red- top-[24vh] w-full items-center justify-between px-5">
+<View style={{ backgroundColor:'rgb(240,253,255)', padding:8, borderRadius: 5 }}>
     <Image
       source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhcSBv-R9ai1XaCPtViPcLvUrsdmBs-8riw&usqp=CAU' }}
       style={{ width: 50, height: 50, borderRadius: 50 }}
@@ -111,7 +115,7 @@ const History = () => {
       <Text style={{ color: 'black', fontSize: 20 }}>Rent and insurance</Text>
       <Text style={{ color: 'grey' }}>This week</Text>
     </View>
-  <Text style={{ color: 'red', fontWeight: '500' }}>- $1500</Text>
+  <Text style={{ color: 'green', fontWeight: '500' }}>+ $2000</Text>
 </View>
 
 

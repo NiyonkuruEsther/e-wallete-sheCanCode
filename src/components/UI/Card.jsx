@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-
+import { MoreOutlined } from '@ant-design/icons';
 function Card() {
   return (
     <View style={styles.cardContainer}>
@@ -15,11 +15,13 @@ function Card() {
           /></Text>
           <Text style={styles.amount}>$203840</Text>
 
-          <Text style={styles.text}> <AntDesign
-            name="downcircleo"
+          <Text style={styles.text}><AntDesign
+            name="arrowdown"
             size={15}
             color="black"
+            style={{backgroundColor:'rgb(240,253,255)'}}
           />    Income</Text>
+         
           <Text style={{color:'black',fontSize:20,fontWeight:500}}>$102350</Text>
         </View>
 
@@ -27,15 +29,16 @@ function Card() {
         <View style={styles.column}>
           <View style={styles.innerColumn}>
             <Text style={styles.icon}><AntDesign
-              name="dotchart"
-              size={20}
+              name="ellipsis1"
+              size={30}
               color="black"
             /></Text>
             <Text style={styles.space}></Text>
             <Text style={styles.text}> <AntDesign
-            name="upcircleo"
+            name="arrowup"
             size={15}
             color="black"
+            style={{backgroundColor:'rgb(240,253,255)'}}
           /> Expenses</Text>
             <Text style={{color:'black',fontSize:20,fontWeight:500}}>$97760</Text>
           </View>
@@ -77,14 +80,14 @@ const styles = StyleSheet.create({
   amount: {
     color: 'black',
     fontWeight: '800',
-    fontSize: 35,
+    fontSize: 20,
     marginBottom: 10,
   },
   icon: {
     alignItems: 'flex-end',
   },
   space: {
-    height:60,
+    height:30,
   },
   shadow: {
     ...Platform.select({
