@@ -128,13 +128,12 @@ const AddExpenses = () => {
             data={optionData}
             search
             maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Select item"
+            placeholder={"Select Item"}
             searchPlaceholder="Search..."
             value={value}
             onChange={(item) => {
-              setExpensesData({ ...expensesData, category: item });
+              setValue(item.label);
+              setExpensesData({ ...expensesData, category: item.label });
             }}
             renderLeftIcon={() => (
               <AntDesign
@@ -192,7 +191,6 @@ const AddExpenses = () => {
             <RNDateTimePicker
               mode="date"
               accentColor="#17B7BD"
-              minimumDate={new Date()}
               themeVariant=""
               value={new Date()}
               display="compact"
@@ -220,7 +218,7 @@ const AddExpenses = () => {
         </View>
         <Button
           title="Save"
-          onPress={() => writeTransactions("expenses", expensesData, user.id)}
+          onPress={() => console.log(expensesData.category == "")}
         />
       </View>
       {cam && permission.granted && (
