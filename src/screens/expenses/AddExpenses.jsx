@@ -129,10 +129,12 @@ const AddExpenses = () => {
             search
             maxHeight={300}
             placeholder={"Select Item"}
+            valueField={"value"}
+            labelField={"label"}
             searchPlaceholder="Search..."
             value={value}
             onChange={(item) => {
-              setValue(item.label);
+              setValue(item.value);
               setExpensesData({ ...expensesData, category: item.label });
             }}
             renderLeftIcon={() => (
